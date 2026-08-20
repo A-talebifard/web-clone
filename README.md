@@ -1,10 +1,218 @@
 # webclone
 
-> A fast, from-scratch website mirror tool written in Go — with both a CLI and a browser-based GUI.
+> ابزار سریع و کامل برای آینه‌سازی (mirror) کل یک وب‌سایت روی دیسک محلی — نوشته‌شده با Go، همراه با نسخه خط‌فرمان (CLI) و رابط گرافیکی مبتنی بر مرورگر.
 
 [![Go](https://img.shields.io/badge/Go-1.22+-00ADD8?logo=go&logoColor=white)](https://go.dev)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Platforms](https://img.shields.io/badge/platforms-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey)](#building-from-source)
+[![Platforms](https://img.shields.io/badge/platforms-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey)](#ساخت-از-روی-سورس)
+
+**زبان:** [فارسی](#-راهنمای-فارسی) · [English](#-english-guide)
+
+---
+
+# 🇮🇷 راهنمای فارسی
+
+`webclone` کل یک وب‌سایت را روی دیسک محلی شما آینه‌سازی می‌کند. برخلاف
+ابزارهای تک‌صفحه‌ای، این ابزار لینک‌های داخلی را به‌صورت بازگشتی دنبال می‌کند و
+هر صفحه و هر دارایی (HTML، CSS، JS، تصاویر، فونت‌ها، ویدئو/صدا و ...) را ذخیره
+می‌کند و ساختار آدرس‌های سایت را زیر پوشه خروجی بازتولید می‌کند تا نسخه آینه‌شده
+به‌طور **کاملاً آفلاین** قابل مرور باشد.
+
+این ابزار در دو قالب ارائه می‌شود:
+
+- **`webclone`** — ابزار خط‌فرمان برای اسکریپت‌نویسی و خودکارسازی.
+- **`webclone-gui`** — رابط گرافیکی دسکتاپ مبتنی بر مرورگر (Go خالص، بدون CGO)
+  با رابط دوزبانه (فارسی / انگلیسی)، تم تیره و نمایش زنده پیشرفت.
+
+این پروژه بازنویسی از پایه و با الهام از
+[`goclone`](https://github.com/goclone-dev/goclone) است، با این تفاوت که به‌جای
+کلون تک‌صفحه‌ای، کل سایت را به‌صورت بازگشتی می‌خزد.
+
+## امکانات
+
+- **خزش بازگشتی** — دنبال‌کردن `<a href>`، `<iframe src>` و (به‌صورت اختیاری)
+  لینک‌های خارجی.
+- **چیدمان آینه‌ای** — آدرس `https://example.com/foo/bar` در مسیر
+  `example.com/foo/bar/index.html` ذخیره می‌شود، پس ساختار روی دیسک دقیقاً
+  سلسله‌مراتب آدرس‌ها را بازتاب می‌دهد.
+- **بازنویسی لینک‌ها** — هر آدرس مطلق یا ریشه‌نسبی داخل HTML/CSS دانلودشده به یک
+  مسیر نسبی که به نسخه محلی اشاره می‌کند بازنویسی می‌شود، تا آینه بدون هیچ
+  بازنویسی سمت سرور، آفلاین کار کند.
+- **پوشش کامل دارایی‌ها** — CSS (شامل `url()` و `@import`)، JS، تصاویر
+  (`src` و `srcset`)، فونت‌ها، ویدئو/صدا، `style="..."` درون‌خطی، بلوک‌های
+  `<style>`، `<source>`، `<embed>`، `<object>`، `<iframe>` و
+  `<meta http-equiv="refresh">`.
+- **همزمانی** — استخر کارگرِ محدود (پیش‌فرض ۵، قابل تنظیم).
+- **سقف‌های ایمنی** — `--max-urls` و `--max-depth` جلوی خزش بی‌پایان را می‌گیرند.
+- **محدودیت دامنه** — `--same-domain` (به‌صورت پیش‌فرض روشن)،
+  `--allow-subdomains` و `--allowed-hosts` کنترل دقیق روی میزبان‌های مجاز می‌دهند.
+- **پشتیبانی از کوکی** — تنظیم کوکی با `--cookie` برای سایت‌هایی که نیاز به
+  نشست (session) دارند.
+- **پروکسی + UA سفارشی + TLS ناامن** — پیکربندی کامل کلاینت HTTP.
+- **مانیفست** — `--manifest` (پیش‌فرض روشن) فایل `manifest.json` شامل همه
+  آدرس‌های خزیده‌شده را می‌نویسد.
+- **سرور فایل داخلی** — `--serve` یک سرور HTTP ایستا اجرا می‌کند تا بلافاصله
+  آینه را پیش‌نمایش کنید.
+- **رابط گرافیکی مرورگری** — چندسکویی، بدون وابستگی خارجی، نمایش زنده پیشرفت با
+  Server-Sent Events، دوزبانه فارسی/انگلیسی با تغییر جهت RTL/LTR.
+
+## نصب
+
+از روی سورس:
+
+```bash
+git clone https://github.com/a-talebifard/webclone.git
+cd webclone
+go build -o webclone ./cmd/webclone
+./webclone --help
+```
+
+یا با نصب‌بودن Go:
+
+```bash
+go install github.com/a-talebifard/webclone/cmd/webclone@latest
+```
+
+## استفاده از خط‌فرمان
+
+```bash
+webclone [flags] <url> [<url2> ...]
+```
+
+### مثال‌های رایج
+
+```bash
+# آینه‌سازی یک سایت (پیش‌فرض فقط همان دامنه)، همه صفحات داخلی:
+webclone https://example.com
+
+# آینه‌سازی در یک پوشه خروجی مشخص:
+webclone -o ./mirror https://example.com
+
+# محدودکردن به ۳ پرش لینک از نقطه شروع (سریع‌تر و کوچک‌تر):
+webclone --max-depth 3 https://example.com
+
+# دنبال‌کردن لینک‌های خارجی هم (خاموش‌کردن محدودیت هم‌دامنه):
+webclone --same-domain=false https://example.com
+
+# کارگر سفارشی + UA سفارشی + پروکسی:
+webclone -w 10 -u "Mozilla/5.0 ..." --proxy http://localhost:8080 https://example.com
+
+# فهرست میزبان‌های مجاز صریح (بر --same-domain اولویت دارد):
+webclone --allowed-hosts example.com,cdn.example.com https://example.com
+
+# آینه‌سازی و سرو فوری روی http://localhost:8080:
+webclone -s https://example.com
+
+# تنظیم کوکی از قبل (برای سایت‌هایی که نشست می‌خواهند):
+webclone -C "session=abc123; token=xyz" https://example.com
+```
+
+### همه پرچم‌ها (flags)
+
+| پرچم                 | پیش‌فرض   | توضیح                                                                 |
+| -------------------- | --------- | --------------------------------------------------------------------- |
+| `-o, --output`       | `.`       | پوشه خروجی برای درخت آینه                                              |
+| `-w, --workers`      | `5`       | تعداد کارگرهای همزمان دریافت                                           |
+| `--max-urls`         | `10000`   | سقف کل آدرس‌های دریافتی (۰ = نامحدود)                                  |
+| `--max-depth`        | `0`       | حداکثر پرش لینک از نقطه شروع (۰ = نامحدود)                             |
+| `--same-domain`      | `true`    | فقط آدرس‌های روی دامنه ثبت‌شده نقطه شروع را بخز                        |
+| `--allow-subdomains` | `true`    | وقتی `--same-domain` روشن است، زیردامنه‌های میزبان را هم دنبال کن       |
+| `--allowed-hosts`    | (خالی)    | فهرست صریح میزبان‌ها با کاما (بر `--same-domain` اولویت دارد)          |
+| `--skip-assets`      | `false`   | فقط صفحات HTML را دانلود کن، از CSS/JS/تصاویر بگذر                     |
+| `--asset-ext`        | (خالی)    | فهرست پسوندهای دارایی برای دانلود با کاما (خالی = همه)                 |
+| `--timeout`          | `60s`     | مهلت هر درخواست                                                       |
+| `-u, --user-agent`   | (پیش‌فرض) | رشته User-Agent سفارشی                                                |
+| `-p, --proxy`        | (خالی)    | آدرس پروکسی (`http://`، `https://`، `socks5://`)                      |
+| `--insecure-tls`     | `false`   | نادیده‌گرفتن اعتبارسنجی گواهی TLS                                     |
+| `-v, --verbose`      | `false`   | خروجی گزارش پرجزئیات به‌ازای هر آدرس                                   |
+| `-q, --quiet`        | `false`   | حذف همه خروجی‌های غیرخطا                                              |
+| `-s, --serve`        | `false`   | پس از آینه‌سازی، پوشه خروجی را روی یک سرور HTTP محلی سرو کن            |
+| `-P, --serve-port`   | `8080`    | پورت برای `--serve`                                                  |
+| `--manifest`         | `true`    | نوشتن `manifest.json` با همه آدرس‌های خزیده‌شده                        |
+| `-C, --cookie`       | (خالی)    | تنظیم کوکی از قبل (`name=value; name2=value2`)                        |
+
+## رابط گرافیکی (GUI)
+
+`webclone-gui` یک رابط گرافیکی دسکتاپ **مبتنی بر مرورگر** است. یک سرور HTTP
+محلی اجرا می‌کند و مرورگر پیش‌فرض شما را باز می‌کند — بدون CGO، بدون MinGW و
+بدون هیچ وابستگی خارجی، فقط Go خالص.
+
+### ساخت و اجرا
+
+```bash
+go build -o webclone-gui ./cmd/webclone-gui
+./webclone-gui
+```
+
+در ویندوز:
+
+```powershell
+go build -o webclone-gui.exe .\cmd\webclone-gui
+.\webclone-gui.exe
+```
+
+مرورگر شما به‌صورت خودکار روی `http://127.0.0.1:8080/` باز می‌شود. برای پورت
+سفارشی:
+
+```bash
+./webclone-gui 9090   # به‌جای 8080 از پورت 9090 استفاده کن
+```
+
+### امکانات رابط گرافیکی
+
+- **ناوبری کناری** (به سبک VS Code): تنظیمات، کنترل‌ها، پیشرفت، پیشرفته،
+  گزارش‌ها، درباره.
+- **پیشرفت زنده**: شمارنده صفحه/دارایی، تعداد بایت، زمان سپری‌شده، آدرس فعلی،
+  آخرین فایل ذخیره‌شده و نوار پیشرفت.
+- **نمایشگر گزارش بلادرنگ** با فیلتر و کپی.
+- **دوزبانه** با تغییر زبان تک‌کلیکی (FA ⇄ EN، RTL ⇄ LTR).
+- دکمه **باز کردن خروجی** برای اجرای مدیر فایل در پوشه آینه.
+- دکمه **باز کردن در مرورگر** برای پیش‌نمایش `index.html` آینه‌شده.
+
+## چیدمان آینه
+
+`webclone` سلسله‌مراتب آدرس‌ها را دقیقاً حفظ می‌کند:
+
+| آدرس منبع                             | مسیر روی دیسک                        |
+| ------------------------------------- | ----------------------------------- |
+| `https://example.com/`                | `example.com/index.html`            |
+| `https://example.com/foo`             | `example.com/foo/index.html`        |
+| `https://example.com/foo/bar.html`    | `example.com/foo/bar.html`          |
+| `https://example.com/style.css`       | `example.com/style.css`             |
+| `https://example.com/foo?x=1`         | `example.com/foo/index_<hash>.html` |
+
+آدرس‌های دارای رشته پرس‌وجو (query) یک هش کوتاه MD5 از query را در انتهای نام
+فایل (پیش از پسوند) می‌گیرند، تا صفحات متمایز با query متفاوت، فایل‌های جدا
+بگیرند.
+
+## ساخت از روی سورس
+
+نیازمند **Go 1.22 یا بالاتر**.
+
+```bash
+# نسخه خط‌فرمان
+go build -o webclone ./cmd/webclone
+
+# نسخه گرافیکی
+go build -o webclone-gui ./cmd/webclone-gui
+```
+
+یا با `Makefile` موجود:
+
+```bash
+make build     # ساخت CLI
+make gui       # ساخت GUI
+make test      # اجرای تست‌ها با آشکارساز race
+make dist      # کامپایل متقاطع برای Linux، macOS و Windows
+```
+
+## مجوز
+
+MIT — به [LICENSE](LICENSE) مراجعه کنید.
+
+---
+
+# 🇬🇧 English Guide
 
 `webclone` mirrors an entire website to your local disk. Unlike a single-page
 cloner, it follows internal links recursively and saves every page and asset
@@ -21,24 +229,6 @@ It ships in two forms:
 It is a from-scratch rewrite inspired by
 [`goclone`](https://github.com/goclone-dev/goclone), with full-site recursive
 crawling instead of single-page cloning.
-
----
-
-## Table of contents
-
-- [Features](#features)
-- [Installation](#installation)
-- [CLI usage](#cli-usage)
-- [Graphical UI](#graphical-ui-gui)
-- [Mirror layout](#mirror-layout)
-- [Link rewriting](#link-rewriting)
-- [Output structure](#output-structure)
-- [Building from source](#building-from-source)
-- [Project layout](#project-layout)
-- [Differences from goclone](#differences-from-goclone)
-- [License](#license)
-
----
 
 ## Features
 
@@ -170,22 +360,6 @@ port:
 ./webclone-gui 9090   # use port 9090 instead of 8080
 ```
 
-### Why a browser-based GUI?
-
-| Approach          | CGO?   | External deps         | Cross-platform         | Reliable |
-| ----------------- | ------ | --------------------- | ---------------------- | -------- |
-| Fyne (native)     | ✅ Yes | MinGW + OpenGL + X11  | ❌ Linux needs dev libs | ❌       |
-| **Web UI (this)** | ❌ No  | Just a browser        | ✅ Everywhere           | ✅       |
-
-The web GUI uses:
-
-- **Pure Go standard library** — no CGO, no compiler toolchain needed.
-- **Embedded HTML/CSS/JS** — all UI assets are bundled into the binary.
-- **Server-Sent Events (SSE)** — live progress streaming to the browser.
-- **Vazirmatn font** — full Persian + Latin glyph coverage.
-- **Dark modern theme** with an indigo accent.
-- **Bilingual** with a one-click language toggle (FA ⇄ EN, RTL ⇄ LTR).
-
 ### GUI features
 
 - **Sidebar navigation** (VS Code-style): Settings, Controls, Progress,
@@ -193,6 +367,7 @@ The web GUI uses:
 - **Live progress**: page/asset counters, byte count, elapsed time, current
   URL, last saved file, and a progress bar.
 - **Real-time log viewer** with filter and copy.
+- **Bilingual** with a one-click language toggle (FA ⇄ EN, RTL ⇄ LTR).
 - **Open output** button to launch the file manager at the mirror dir.
 - **Open in browser** button to preview the mirrored `index.html`.
 
@@ -204,56 +379,13 @@ The web GUI uses:
 | ------------------------------------- | ----------------------------------- |
 | `https://example.com/`                | `example.com/index.html`            |
 | `https://example.com/foo`             | `example.com/foo/index.html`        |
-| `https://example.com/foo/`            | `example.com/foo/index.html`        |
-| `https://example.com/foo/bar`         | `example.com/foo/bar/index.html`    |
 | `https://example.com/foo/bar.html`    | `example.com/foo/bar.html`          |
 | `https://example.com/style.css`       | `example.com/style.css`             |
 | `https://example.com/foo?x=1`         | `example.com/foo/index_<hash>.html` |
-| `https://example.com/style.css?v=123` | `example.com/style_<hash>.css`      |
 
 URLs with a query string get a short MD5 hash of the query appended to the
 filename (before the extension), so distinct query-keyed pages get distinct
 files.
-
-## Link rewriting
-
-After downloading a page, `webclone` rewrites every link inside it to point at
-the local mirror copy. The rewriter handles:
-
-- `<a href>` and `<area href>` — page links
-- `<iframe src>` — iframe pages
-- `<link rel="stylesheet|icon|manifest|...">` — CSS / icons / manifests
-- `<script src>` — JavaScript
-- `<img src>` and `<img srcset>`
-- `<source src>` and `<source srcset>`
-- `<video src>`, `<video poster>`, `<audio src>`
-- `<embed src>`, `<object data>`
-- Inline `style="background: url(...)"`
-- `<style>` blocks (rewrites `url()` and `@import`)
-- `<meta http-equiv="refresh" content="0; url=...">`
-
-URLs that are not being mirrored (external links when `--same-domain` is on, or
-`mailto:` / `javascript:` / `data:` schemes) are left untouched.
-
-## Output structure
-
-```
-./example.com/
-├── index.html              # https://example.com/
-├── about/
-│   └── index.html          # https://example.com/about
-├── blog/
-│   ├── index.html          # https://example.com/blog
-│   └── post-1/
-│       └── index.html      # https://example.com/blog/post-1
-├── css/
-│   └── main.css            # https://example.com/css/main.css
-├── js/
-│   └── app.js
-├── imgs/
-│   └── logo.png
-└── manifest.json           # List of every URL crawled
-```
 
 ## Building from source
 
@@ -276,14 +408,6 @@ make test      # run tests with the race detector
 make dist      # cross-compile for Linux, macOS, and Windows
 ```
 
-Cross-compile manually:
-
-```bash
-GOOS=linux   GOARCH=amd64 go build -o webclone-linux-amd64   ./cmd/webclone
-GOOS=darwin  GOARCH=arm64 go build -o webclone-darwin-arm64  ./cmd/webclone
-GOOS=windows GOARCH=amd64 go build -o webclone.exe           ./cmd/webclone
-```
-
 ## Project layout
 
 ```
@@ -302,20 +426,6 @@ GOOS=windows GOARCH=amd64 go build -o webclone.exe           ./cmd/webclone
 ├── go.mod
 └── README.md
 ```
-
-## Differences from `goclone`
-
-| Aspect                   | `goclone`                                                   | `webclone`                                                                     |
-| ------------------------ | ----------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| Scope                    | Single page                                                 | Entire site (recursive)                                                        |
-| Mirror layout            | `index.html` + flat `css/`, `js/`, `imgs/`                  | URL hierarchy preserved exactly                                                |
-| Link rewriting           | Only `<script src>`, `<link>`, `<img src>` (top-level page) | All link types, including `srcset`, `<style>`, inline `style`, `<iframe>`, etc. |
-| CSS rewriting            | No                                                          | Yes (`url()`, `@import`)                                                        |
-| Concurrency              | colly async                                                 | Worker pool with bounded concurrency                                           |
-| External link following  | No                                                          | Configurable (off by default via `--same-domain`)                              |
-| Domain policy            | N/A                                                         | `--same-domain`, `--allowed-hosts`                                             |
-| Manifest                 | No                                                          | Yes                                                                            |
-| GUI                      | No                                                          | Browser-based, bilingual (FA/EN)                                               |
 
 ## License
 
