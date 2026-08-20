@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebClone — دانلود کامل وب‌سایت‌ها</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
+</head>
+<body>
+    <!-- Top Bar -->
+    <header class="topbar">
+        <div class="brand">
+            <span class="logo">🌐</span>
+            <div>
+                <h1 data-i18n="app.title">وب‌کلون</h1>
+                <p data-i18n="app.subtitle">دانلود کامل وب‌سایت‌ها</p>
+            </div>
+        </div>
+        <div class="topbar-actions">
+            <button id="themeToggle" class="btn btn-ghost icon-btn" title="Toggle theme">
+                <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+                <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" style="display:none">
+                    <circle cx="12" cy="12" r="5"/>
+                    <line x1="12" y1="1" x2="12" y2="3"/>
+                    <line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/>
+                    <line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                </svg>
+            </button>
+            <button id="langToggle" class="btn btn-ghost">EN</button>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="layout">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <button class="nav-item active" data-tab="jobs">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/>
+                    <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+                </svg>
+                <span data-i18n="nav.jobs">صف دانلود</span>
+            </button>
+            <button class="nav-item" data-tab="controls">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+                <span data-i18n="nav.controls">کنترل</span>
+            </button>
+            <button class="nav-item" data-tab="progress">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                <span data-i18n="nav.progress">پیشرفت</span>
+            </button>
+            <button class="nav-item" data-tab="logs">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/>
+                </svg>
+                <span data-i18n="nav.logs">لاگ‌ها</span>
+            </button>
+            <button class="nav-item" data-tab="about">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+                </svg>
+                <span data-i18n="nav.about">درباره</span>
+            </button>
+        </nav>
+
+        <!-- Content Area -->
+        <main class="content">
+            <!-- Jobs Tab (replaces Settings + Advanced) -->
+            <section class="tab-panel active" id="tab-jobs">
+                <div class="page-header">
+                    <h2 class="page-title" data-i18n="jobs.title">صف دانلود</h2>
+                    <div class="page-actions">
+                        <button class="btn btn-primary btn-lg" id="addJobBtn">
+                            + <span data-i18n="jobs.add">افزودن شغل</span>
+                        </button>
+                        <button class="btn btn-success btn-lg" id="startAllBtn">
+                            ▶ <span data-i18n="jobs.start_all">شروع همه</span>
+                        </button>
+                        <button class="btn btn-ghost btn-lg" id="clearJobsBtn">
+                            🗑 <span data-i18n="jobs.clear_all">پاک کردن همه</span>
+                        </button>
+                    </div>
+                </div>
+                <div id="jobsList" class="jobs-list">
+                    <!-- Job cards rendered here by app.js -->
+                </div>
+                <div id="jobsEmpty" class="jobs-empty">
+                    <div class="jobs-empty-icon">📥</div>
+                    <p data-i18n="jobs.empty">هنوز شغلی اضافه نشده. روی «افزودن شغل» بزنید تا یک سایت جدید پیکربندی کنید.</p>
+                </div>
+            </section>
+
+            <!-- Controls Tab -->
+            <section class="tab-panel" id="tab-controls">
+                <h2 class="page-title" data-i18n="controls.title">کنترل خزش</h2>
+                <div class="controls-grid">
+                    <button class="btn btn-warning btn-xl" id="pauseBtn" disabled>
+                        ⏸ <span data-i18n="controls.pause">مکث</span>
+                    </button>
+                    <button class="btn btn-danger btn-xl" id="stopBtn" disabled>
+                        ■ <span data-i18n="controls.stop">توقف</span>
+                    </button>
+                </div>
+                <div class="controls-grid">
+                    <button class="btn btn-secondary btn-xl" id="openOutputBtn">
+                        📁 <span data-i18n="controls.open_output">باز کردن پوشه</span>
+                    </button>
+                    <button class="btn btn-secondary btn-xl" id="serveBtn">
+                        🌐 <span data-i18n="controls.serve">نمایش در مرورگر</span>
+                    </button>
+                </div>
+                <div class="status-card" id="statusCard">
+                    <span class="status-dot" id="statusDot"></span>
+                    <span id="statusText" data-i18n="controls.status_idle">آماده</span>
+                </div>
+                <!-- Output directory picker for the "Open folder" buttons -->
+                <div class="form-group full" style="margin-top:24px">
+                    <label data-i18n="settings.output_label">پوشه خروجی</label>
+                    <div class="input-with-btn">
+                        <input type="text" id="outputDir" placeholder="E:\downloads\mirror">
+                        <button class="btn btn-secondary" id="browseBtn" data-i18n="settings.output_browse">انتخاب...</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Progress Tab -->
+            <section class="tab-panel" id="tab-progress">
+                <h2 class="page-title" data-i18n="progress.title">پیشرفت زنده</h2>
+                <!-- Current job indicator -->
+                <div class="current-job-card" id="currentJobCard" style="display:none">
+                    <div class="stat-label" data-i18n="progress.current_job">شغل فعلی</div>
+                    <div class="current-job-row">
+                        <span class="job-index-badge" id="currentJobIndex">—</span>
+                        <span class="url-display" id="currentJobURL">—</span>
+                    </div>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
+                    <span class="progress-text" id="progressText">0%</span>
+                </div>
+                <div class="speed-chart-container">
+                    <div class="speed-chart-header">
+                        <div>
+                            <span class="stat-label" data-i18n="progress.speed">سرعت دانلود</span>
+                            <div class="stat-value speed-value" id="statSpeed">— B/s</div>
+                        </div>
+                        <div>
+                            <span class="stat-label" data-i18n="progress.avg_speed">میانگین</span>
+                            <div class="stat-value speed-value" id="statAvgSpeed">— B/s</div>
+                        </div>
+                        <div>
+                            <span class="stat-label" data-i18n="progress.peak_speed">بیشینه</span>
+                            <div class="stat-value speed-value" id="statPeakSpeed">— B/s</div>
+                        </div>
+                    </div>
+                    <canvas id="speedChart" width="800" height="120"></canvas>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label" data-i18n="progress.pages">صفحات HTML</div>
+                        <div class="stat-value" id="statPages">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label" data-i18n="progress.assets">فایل‌ها</div>
+                        <div class="stat-value" id="statAssets">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label" data-i18n="progress.downloaded">دانلود شده</div>
+                        <div class="stat-value" id="statBytes">0 B</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label" data-i18n="progress.failed">خطاها</div>
+                        <div class="stat-value" id="statFailed">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label" data-i18n="progress.skipped">رد شده</div>
+                        <div class="stat-value" id="statSkipped">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label" data-i18n="progress.elapsed">زمان</div>
+                        <div class="stat-value" id="statElapsed">00:00</div>
+                    </div>
+                </div>
+                <div class="current-url">
+                    <div class="stat-label" data-i18n="progress.current_url">URL فعلی</div>
+                    <div class="url-display" id="currentURL">—</div>
+                </div>
+                <div class="last-saved">
+                    <div class="stat-label" data-i18n="progress.last_saved">آخرین فایل</div>
+                    <div class="url-display" id="lastSaved">—</div>
+                </div>
+            </section>
+
+            <!-- Logs Tab -->
+            <section class="tab-panel" id="tab-logs">
+                <h2 class="page-title" data-i18n="logs.title">لاگ‌ها</h2>
+                <div class="logs-toolbar">
+                    <input type="text" id="logFilter" placeholder="فیلتر (مثلاً error)" data-i18n-placeholder="logs.filter_placeholder">
+                    <button class="btn btn-ghost" id="clearLogsBtn" data-i18n="logs.clear">پاک کردن</button>
+                    <button class="btn btn-ghost" id="copyLogsBtn" data-i18n="logs.copy">کپی</button>
+                </div>
+                <div class="logs-viewer" id="logsViewer"></div>
+            </section>
+
+            <!-- About Tab -->
+            <section class="tab-panel" id="tab-about">
+                <h2 class="page-title" data-i18n="about.title">درباره وب‌کلون</h2>
+                <div class="about-card">
+                    <p data-i18n="about.description">وب‌کلون ابزاری است برای دانلود کامل وب‌سایت‌ها به‌صورت آفلاین، با حفظ ساختار URL و بازنویسی لینک‌ها برای کار کردن آفلاین. از فایل‌های صوتی، تصویری، زیرنویس و تمام assetها پشتیبانی می‌کند.</p>
+                    <div class="about-meta">
+                        <div><strong data-i18n="about.version">نسخه:</strong> 1.0.0</div>
+                        <div><strong data-i18n="about.license">لایسنس:</strong> MIT</div>
+                        <div><strong data-i18n="about.powered_by">ساخته‌شده با:</strong> Go</div>
+                    </div>
+                    <div class="about-actions">
+                        <a href="https://github.com/A-talebifard" target="_blank" class="btn btn-primary btn-lg">
+                            🐙 <span data-i18n="about.github">مشاهده در گیت‌هاب</span>
+                        </a>
+                    </div>
+                    <div class="about-footer">
+                        <p data-i18n="about.developer">توسعه‌دهنده: A-talebifard</p>
+                        <a href="https://github.com/A-talebifard" target="_blank" class="footer-link" data-i18n="about.footer">برای مشاهده در گیت‌هاب کلیک کنید</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Status Bar -->
+    <footer class="statusbar">
+        <span id="footerStatus" data-i18n="controls.status_idle">آماده</span>
+        <span class="spacer"></span>
+        <span id="footerURL"></span>
+    </footer>
+
+    <!-- Job Modal (Add/Edit) -->
+    <div class="modal-overlay" id="jobModal" style="display:none">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle" data-i18n="jobs.modal.add_title">افزودن شغل جدید</h3>
+                <button class="modal-close" id="modalCloseBtn">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group full">
+                        <label data-i18n="settings.url_label">آدرس سایت (URL)</label>
+                        <input type="url" id="modal_url" placeholder="https://example.com">
+                    </div>
+                    <div class="form-group full">
+                        <label data-i18n="settings.output_label">پوشه خروجی</label>
+                        <div class="input-with-btn">
+                            <input type="text" id="modal_outputDir" placeholder="E:\downloads\mirror-example">
+                            <button class="btn btn-secondary" id="modal_browseBtn" data-i18n="settings.output_browse">انتخاب...</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="settings.workers_label">تعداد همزمانی</label>
+                        <input type="number" id="modal_workers" value="5" min="1" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="settings.max_urls_label">حداکثر تعداد URL</label>
+                        <input type="number" id="modal_maxURLs" value="10000" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="settings.max_depth_label">حداکثر عمق</label>
+                        <input type="number" id="modal_maxDepth" value="0" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="settings.timeout_label">انقضای درخواست (ثانیه)</label>
+                        <input type="number" id="modal_timeout" value="60" min="1">
+                    </div>
+                </div>
+                <div class="checkbox-grid">
+                    <label class="checkbox"><input type="checkbox" id="modal_sameDomain" checked> <span data-i18n="flags.same_domain">فقط هم‌دامنه</span></label>
+                    <label class="checkbox"><input type="checkbox" id="modal_allowSubs" checked> <span data-i18n="flags.allow_subdomains">ساب‌دامین‌ها</span></label>
+                    <label class="checkbox"><input type="checkbox" id="modal_skipAssets"> <span data-i18n="flags.skip_assets">فقط HTML</span></label>
+                    <label class="checkbox"><input type="checkbox" id="modal_insecureTLS"> <span data-i18n="flags.insecure_tls">نادیده گرفتن TLS</span></label>
+                    <label class="checkbox"><input type="checkbox" id="modal_manifest" checked> <span data-i18n="flags.manifest">manifest.json</span></label>
+                </div>
+                <!-- Advanced settings collapsed inside the modal -->
+                <details class="modal-advanced">
+                    <summary data-i18n="jobs.modal.advanced">تنظیمات پیشرفته</summary>
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label data-i18n="advanced.proxy_label">پراکسی</label>
+                            <input type="text" id="modal_proxy" placeholder="http://localhost:8080">
+                        </div>
+                        <div class="form-group full">
+                            <label data-i18n="advanced.user_agent_label">User-Agent سفارشی</label>
+                            <input type="text" id="modal_userAgent" placeholder="Mozilla/5.0 ...">
+                        </div>
+                        <div class="form-group full">
+                            <label data-i18n="advanced.cookies_label">کوکی‌ها</label>
+                            <input type="text" id="modal_cookies" placeholder="session=abc123; token=xyz">
+                        </div>
+                        <div class="form-group full">
+                            <label data-i18n="advanced.allowed_hosts_label">میزبان‌های مجاز</label>
+                            <input type="text" id="modal_allowedHosts" placeholder="example.com,cdn.example.com">
+                        </div>
+                        <div class="form-group full">
+                            <label data-i18n="advanced.asset_ext_label">پسوندهای asset</label>
+                            <input type="text" id="modal_assetExt" placeholder=".css,.js,.png">
+                        </div>
+                    </div>
+                </details>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" id="modalCancelBtn" data-i18n="jobs.modal.cancel">انصراف</button>
+                <button class="btn btn-primary" id="modalSaveBtn" data-i18n="jobs.modal.save">ذخیره شغل</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer"></div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

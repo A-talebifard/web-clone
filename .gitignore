@@ -1,0 +1,23 @@
+# Build artifacts
+/webclone
+/webclone-gui
+/webclone.exe
+/webclone-gui.exe
+*.exe
+/bin/
+/dist/
+
+# Output directories created by running the tool
+/example.com/
+/*.html
+
+# Go workspace files
+go.work
+go.work.sum
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
