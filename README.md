@@ -1,5 +1,5 @@
 # webclone
-![]([https://i.imgur.com/Pd98y49.jpg](https://github.com/A-talebifard/web-clone/blob/main/banner.svg))
+![](https://github.com/A-talebifard/web-clone/blob/main/banner.svg)
 > ابزار سریع و کامل برای آینه‌سازی (mirror) کل یک وب‌سایت روی دیسک محلی — نوشته‌شده با Go، همراه با نسخه خط‌فرمان (CLI) و رابط گرافیکی مبتنی بر مرورگر.
 
 [![Go](https://img.shields.io/badge/Go-1.22+-00ADD8?logo=go&logoColor=white)](https://go.dev)
